@@ -17,16 +17,20 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
-function goodList(list, { sortProduct, reverse = '' }) {
+const SORT_PRODUCT_NAME = 'alphabetically';
+const SORT_PRODUCT_LENGTH = 'length';
+const PRODUCT_REVERSE = 'reverse';
+
+function getSortedGoods(list, { sortProduct, reverse = '' }) {
   const newGoodList = [...list];
 
   if (sortProduct) {
     newGoodList.sort((poz1, poz2) => {
       switch (sortProduct) {
-        case 'alphabetically':
+        case SORT_PRODUCT_NAME:
           return poz1.localeCompare(poz2);
 
-        case 'length':
+        case SORT_PRODUCT_LENGTH:
           return poz1.length - poz2.length;
 
         default:
@@ -35,7 +39,7 @@ function goodList(list, { sortProduct, reverse = '' }) {
     });
   }
 
-  if (reverse === 'reverse') {
+  if (reverse === PRODUCT_REVERSE) {
     newGoodList.reverse();
   }
 
@@ -45,7 +49,7 @@ function goodList(list, { sortProduct, reverse = '' }) {
 export const App = () => {
   const [sortProduct, setSortProduct] = useState('');
   const [reverse, setReverse] = useState('');
-  const visibleProduct = goodList(goodsFromServer, {
+  const visibleProduct = getSortedGoods(goodsFromServer, {
     sortProduct,
     reverse,
   });
@@ -56,9 +60,9 @@ export const App = () => {
         <button
           type="button"
           className={cn('button is-info', {
-            'is-light': sortProduct !== 'alphabetically',
+            'is-light': sortProduct !== SORT_PRODUCT_NAME,
           })}
-          onClick={() => setSortProduct('alphabetically')}
+          onClick={() => setSortProduct(SORT_PRODUCT_NAME)}
         >
           Sort alphabetically
         </button>
@@ -66,9 +70,9 @@ export const App = () => {
         <button
           type="button"
           className={cn('button is-success', {
-            'is-light': sortProduct !== 'length',
+            'is-light': sortProduct !== SORT_PRODUCT_LENGTH,
           })}
-          onClick={() => setSortProduct('length')}
+          onClick={() => setSortProduct(SORT_PRODUCT_LENGTH)}
         >
           Sort by length
         </button>
@@ -76,9 +80,11 @@ export const App = () => {
         <button
           type="button"
           className={cn('button is-warning', {
-            'is-light': reverse !== 'reverse',
+            'is-light': reverse !== PRODUCT_REVERSE,
           })}
-          onClick={() => setReverse(ch => (ch !== 'reverse' ? 'reverse' : ''))}
+          onClick={() =>
+            setReverse(ch => (ch !== PRODUCT_REVERSE ? PRODUCT_REVERSE : ''))
+          }
         >
           Reverse
         </button>
