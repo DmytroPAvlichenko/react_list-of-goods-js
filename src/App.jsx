@@ -54,6 +54,10 @@ export const App = () => {
     reverse,
   });
 
+  const coincidence = (
+    visibleProduct.length === goodsFromServer.length 
+  &&  visibleProduct.every((g, i) => g === goodsFromServer[i]))
+
   return (
     <div className="section content">
       <div className="buttons">
@@ -89,7 +93,7 @@ export const App = () => {
           Reverse
         </button>
 
-        {(sortProduct || reverse) && (
+        {!coincidence && (
           <button
             type="button"
             className="button is-danger is-light"
